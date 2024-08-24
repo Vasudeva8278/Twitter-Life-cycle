@@ -60,3 +60,8 @@ class ShareListView(generics.ListCreateAPIView):
 class ShareDetailView(generics.RetrieveDestroyAPIView):
     queryset = Share.objects.all()
     serializer_class = ShareSerializer
+
+
+class ShareDetailView(generics.RetrieveDestroyAPIView):
+    queryset = Share.objects.all()
+    serializer_class = ShareSerializer
