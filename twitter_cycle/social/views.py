@@ -61,7 +61,7 @@ class ShareDetailView(generics.RetrieveDestroyAPIView):
     queryset = Share.objects.all()
     serializer_class = ShareSerializer
 
-
+#views
 class ShareDetailView(generics.RetrieveDestroyAPIView):
     queryset = Share.objects.all()
     serializer_class = ShareSerializer
