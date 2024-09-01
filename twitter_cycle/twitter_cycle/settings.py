@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-
+LOGIN_REDIRECT_URL = '/home/'
 WSGI_APPLICATION = 'twitter_cycle.wsgi.application'
 
 

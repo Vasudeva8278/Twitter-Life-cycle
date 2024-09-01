@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <!-- Link to CSS files here -->
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Welcome, {{ user.username }}</h1>
+            <nav>
+                <a href="{% url 'logout' %}">Logout</a>
+            </nav>
+        </header>
+
+        <!-- Posts Section -->
+        <div class="posts">
+            {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <h2>{{ post.user.username }}</h2>
+                    <p>{{ post.created_at }}</p>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </div>
+                <div class="post-content">
+                    <p>{{ post.content }}</p>
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post Image">
+                    {% endif %}
+                </div>
+                <div class="post-actions">
+                    <div class="likes">
+                        <p>{{ post.likes.count }} likes</p>
+                        <form method="POST" action="{% url 'like_post' post.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Like</button>
+                        </form>
+                    </div>
+                    <div class="comments">
+                        <h3>Comments</h3>
+                        {% for comment in comments %}
+                            {% if comment.post == post %}
+                            <div class="comment">
+                                <p><strong>{{ comment.user.username }}:</strong> {{ comment.content }}</p>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        <form method="POST" action="{% url 'comment_post' post.id %}">
+                            {% csrf_token %}
+                            <textarea name="content" rows="2" placeholder="Add a comment..."></textarea>
+                            <button type="submit">Comment</button>
+                        </form>
+                    </div>
+                    <div class="shares">
+                        <p>{{ post.shares.count }} shares</p>
+                        <form method="POST" action="{% url 'share_post' post.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Share</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
