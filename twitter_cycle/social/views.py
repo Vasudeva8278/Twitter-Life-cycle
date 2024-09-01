@@ -4,14 +4,33 @@ from rest_framework import generics,permissions
 from rest_framework.response import Response
 from .serializers import RegisterSerializer,UserprofileSerializer,PostSerializer,Likeserializer,CommentSerializer,ShareSerializer
 from django.db.models import Q
+from django.views import View
+from django.contrib.auth.models import User
 from .models import UserProfile, Post, Like, Share, Comment
+
 # Create your views here.
-def home(request):
-    return HttpResponse("welcome Preerthi")
+class CustomLoginView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'login.html')
 
 
 class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
     serializer_class = RegisterSerializer
+    template_name = 'register.html'
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer()
+        return render(request, self.template_name, {'serializer': serializer})
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.POST)
+        if serializer.is_valid():  # Corrected from 'is_vaild' to 'is_valid'
+            serializer.save()
+            
+            # Redirect or return a success message
+            return render(request, 'login.html')  # Redirect to a success page or home
+        return render(request, self.template_name, {'serializer': serializer})
 
 
 class UserProfileListview(generics.ListCreateAPIView):
